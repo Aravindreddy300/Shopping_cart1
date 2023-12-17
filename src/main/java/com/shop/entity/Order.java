@@ -1,3 +1,5 @@
+// This is a Java class representing the "Order" entity in a Spring application.
+
 package com.shop.entity;
 
 import java.time.LocalDate;
@@ -8,10 +10,12 @@ import jakarta.persistence.*;
 @Table(name = "order1")
 public class Order {
 
+	// Default constructor
 	public Order() {
 		super();
 	}
 
+	// Parameterized constructor with Cart entity reference
 	public Order(Long oId, Double oCost, LocalDate oDate, Cart cart) {
 		super();
 		this.oId = oId;
@@ -20,20 +24,25 @@ public class Order {
 		this.cart = cart;
 	}
 
-	
-
+	// Entity identifier
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long oId;
 
+	// Order cost
 	private Double oCost;
 
+	// Order date
 	private LocalDate oDate;
 
+	// Order status
 	private boolean orderStatus;
 
+	// One-to-one relationship with Cart entity
 	@OneToOne
 	private Cart cart;
+
+	// Getters and setters for the fields
 
 	public Long getoId() {
 		return oId;

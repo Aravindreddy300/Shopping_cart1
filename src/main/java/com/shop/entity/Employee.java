@@ -1,9 +1,13 @@
+// This is a Java class representing the "Employee" entity in a Spring application.
+
 package com.shop.entity;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,40 +22,49 @@ import jakarta.validation.constraints.*;
 @Validated
 public class Employee {
 	
-	
-	
+	// Ignoring this field in JSON serialization
+	@JsonIgnore
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+	
+	// Validation annotations for name
 	@NotBlank(message = "Name cannot be blank")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     private String name;
 
+	// Validation annotations for salary
 	@NotNull(message = "Salary cannot be null")
     @Min(value = 0, message = "Salary must be a non-negative value")
     private double salary;
 
+	// Validation annotations for position
 	@NotBlank(message = "Position cannot be blank")
     private String position;
+
+	// Default constructor
     public Employee() {
 		super();
 	}
 
+	// Parameterized constructor
 	public Employee(Long id, String name, double salary, String position) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.salary = salary;
 		this.position = position;
-		
 	}
 
-	
-    
+	// Ignoring this field in JSON serialization
+    @JsonIgnore
     @ManyToMany
-    private Set<Order> orders=new HashSet<>();
+    private Set<Order> orders = new HashSet<>();
     
+    // Number of orders accepted by the employee
     private int ordersAccepted;
+
+	// Getters and setters for the fields
 
 	public Long getId() {
 		return id;
@@ -100,9 +113,4 @@ public class Employee {
 	public void setOrdersAccepted(int ordersAccepted) {
 		this.ordersAccepted = ordersAccepted;
 	}
-    
-    
-    
-    
-    
 }

@@ -1,5 +1,6 @@
-package com.shop.entity;
+// This is a Java class representing the "Cart" entity in a Spring application.
 
+package com.shop.entity;
 
 import java.util.List;
 
@@ -9,18 +10,15 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="carts")
-
 public class Cart {
 
-   
-
+    // Default constructor
 	public Cart() {
 		super();
 	}
 	
-	
-
-public Cart(Long id, int quantity, List<Product> products, Customer customer) {
+	// Parameterized constructor with a List of products and a reference to the customer
+	public Cart(Long id, int quantity, List<Product> products, Customer customer) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
@@ -28,41 +26,23 @@ public Cart(Long id, int quantity, List<Product> products, Customer customer) {
 		this.customer = customer;
 	}
 
-
-
-//	public Cart(Long id,  @NotBlank int quantity, Product product, Customer customer) {
-//		super();
-//		this.id = id;
-//		
-//		this.quantity = quantity;
-//		this.product = product;
-//		this.customer = customer;
-//	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
-
-
+	// Entity identifier
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;  // Assuming you have a primary key for the Cart entity
-
-
-    
    
+    // Quantity of items in the cart
     private int quantity;
     
+    // One-to-many relationship with Product entity
     @OneToMany
     private List<Product> products;
     
+    // One-to-one relationship with Customer entity
     @OneToOne
     private Customer customer;
+
+	// Getters and setters for the fields
 
 	public Long getId() {
 		return id;
@@ -72,7 +52,6 @@ public Cart(Long id, int quantity, List<Product> products, Customer customer) {
 		this.id = id;
 	}
 
-	
 	public int getQuantity() {
 		return quantity;
 	}
@@ -81,13 +60,13 @@ public Cart(Long id, int quantity, List<Product> products, Customer customer) {
 		this.quantity = quantity;
 	}
 
-//	public Product getProduct() {
-//		return product;
-//	}
-//
-//	public void setProduct(Product product) {
-//		this.product = product;
-//	}
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
 
 	public Customer getCustomer() {
 		return customer;
@@ -96,14 +75,4 @@ public Cart(Long id, int quantity, List<Product> products, Customer customer) {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-
-//	@Override
-//	public String toString() {
-//		return "Cart [id=" + id + ", quantity=" + quantity + ", product=" + product + ", customer="
-//				+ customer + "]";
-//	}
-
-	
-    
-
-   }
+}

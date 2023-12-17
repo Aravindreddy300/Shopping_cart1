@@ -1,3 +1,5 @@
+// This is a Java class representing the "Stock" entity in a Spring application.
+
 package com.shop.entity;
 
 import org.springframework.validation.annotation.Validated;
@@ -15,10 +17,12 @@ import jakarta.validation.constraints.NotBlank;
 @Validated
 public class Stock {
     
+    // Default constructor
     public Stock() {
 		super();
 	}
 
+    // Parameterized constructor with validation annotations
 	public Stock(@Min(value = 0, message = "Quantity must be greater than or equal to 0") int quantity,
 			@NotBlank(message = "Location is required") String location,
 			@NotBlank(message = "Supplier is required") String supplier) {
@@ -26,26 +30,26 @@ public class Stock {
 		this.quantity = quantity;
 		this.location = location;
 		this.supplier = supplier;
-		//this.product = product;
 	}
 	
-	
+	// Entity identifier
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;  
 
+	// Validation annotation for quantity
 	@Min(value = 0, message = "Quantity must be greater than or equal to 0")
     private int quantity;
 
+    // Validation annotation for location
     @NotBlank(message = "Location is required")
     private String location;
 
+    // Validation annotation for supplier
     @NotBlank(message = "Supplier is required")
     private String supplier;
 
-    
-//    @OneToOne
-  //  private Product product;
+    // Getters and setters for the fields
 
 	public int getQuantity() {
 		return quantity;
@@ -71,19 +75,11 @@ public class Stock {
 		this.supplier = supplier;
 	}
 
-	/*public Product getProduct() {
-		return product;
+	public Long getId() {
+		return id;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setId(Long id) {
+		this.id = id;
 	}
-
-	@Override
-	public String toString() {
-		return "Stock [quantity=" + quantity + ", location=" + location + ", supplier=" + supplier + ", product="
-				+ product + "]";
-	}*/
-    
-
 }

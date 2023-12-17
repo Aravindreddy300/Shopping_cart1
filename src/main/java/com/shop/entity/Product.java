@@ -1,5 +1,6 @@
-package com.shop.entity;
+// This is a Java class representing the "Product" entity in a Spring application.
 
+package com.shop.entity;
 
 import org.springframework.validation.annotation.Validated;
 
@@ -9,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -18,12 +18,12 @@ import jakarta.validation.constraints.Positive;
 @Validated
 public class Product {
 
-
+	// Default constructor
 	public Product() {
 		super();
 	}
 
-
+	// Parameterized constructor with Stock entity reference
 	public Product(Long id, @NotBlank(message = "Name is required") String name,
 			@Positive(message = "Price must be greater than 0") double price,
 			@NotBlank(message = "Category is required") String category, Stock stock) {
@@ -33,11 +33,9 @@ public class Product {
 		this.price = price;
 		this.category = category;
 		this.stock = stock;
-		//this.customer = customer;
 	}
-	
 
-
+	// Alternate parameterized constructor without Stock entity reference
 	public Product(Long id, @NotBlank(message = "Name is required") String name,
 			@Positive(message = "Price must be greater than 0") double price,
 			@NotBlank(message = "Category is required") String category) {
@@ -48,7 +46,7 @@ public class Product {
 		this.category = category;
 	}
 
-
+	// Alternate parameterized constructor without ID
 	public Product(@NotBlank(message = "Name is required") String name,
 			@Positive(message = "Price must be greater than 0") double price,
 			@NotBlank(message = "Category is required") String category) {
@@ -58,82 +56,67 @@ public class Product {
 		this.category = category;
 	}
 
-
-
+	// Entity identifier
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @NotBlank(message = "Name is required")
-    private String name;
+	// Validation annotation for name
+	@NotBlank(message = "Name is required")
+	private String name;
 
-    @Positive(message = "Price must be greater than 0")
-    private double price;
+	// Validation annotation for positive price
+	@Positive(message = "Price must be greater than 0")
+	private double price;
 
-    @NotBlank(message = "Category is required")
-    private String category;
+	// Validation annotation for category
+	@NotBlank(message = "Category is required")
+	private String category;
 
-    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name="profuct_id",referencedColumnName = "id")
-    private Stock stock;
+	// One-to-one relationship with Stock entity, cascade operation on all operations
+	@OneToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name="profuct_id",referencedColumnName = "id")
+	private Stock stock;
 
+	// Getters and setters for the fields
 
 	public Long getId() {
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public String getName() {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public double getPrice() {
 		return price;
 	}
 
-
 	public void setPrice(double price) {
 		this.price = price;
 	}
-
 
 	public String getCategory() {
 		return category;
 	}
 
-
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
 
 	public Stock getStock() {
 		return stock;
 	}
 
-
 	public void setStock(Stock stock) {
 		this.stock = stock;
 	}
-
-
-
-
-	
-
-
-
-   
-    
 }

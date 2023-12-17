@@ -1,3 +1,6 @@
+// Service class managing Cart-related operations.
+// Implements CartDAO interface.
+
 package com.shop.service;
 
 import java.util.ArrayList;
@@ -18,96 +21,76 @@ import com.shop.repository.ProductRepository;
 @Service
 public class CartService implements CartDAO {
 
-	@Autowired
-	CustomerService customerService;
+    // Autowired fields for dependency injection.
+    @Autowired
+    private CustomerService customerService;
 
-	@Autowired
-	ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-	@Autowired
-	CartRepository cartRepository;
+    @Autowired
+    private CartRepository cartRepository;
 
-//	public Cart addToCart(Long productId, Long customerId,int quantity) {
-//		
-//		Customer c=customerService.getCustomerById(productId).get();
-//		Product p=productService.getProductById(productId).get();
-//		Cart cart=new Cart();
-//		cart.setCustomer(c);
-//		cart.setProduct(p);
-//		cart.setQuantity(quantity);
-//		
-//		
-//		return cartRepository.save(cart);
-//	}
+    // Method to add a product to the cart.
+    public Cart addToCart(Long productId, Long customerId, int quantity) {
+        // Find the customer by ID
+        Optional<Customer> customerOptional = customerService.getCustomerById(customerId);
 
-//	public Cart addToCart(Long productId, Long customerId, int quantity) {
-//		
-//        // Find the product by ID
-//		Cart cart = cartRepository.findByCustomer_Id(customerId);
-//		Customer c=customerService.getCustomerById(productId).get();
-//		if(cart==null) {
-//			cart = new Cart();
-//			List<Product> prod=new ArrayList<>();
-//			prod.add(productService.getProductById(productId));
-//			cart.setCustomer(c);
-//            cart.setProducts(prod);
-//		}else {
-//			List<Product> prod=cart.getProducts();
-//			prod.add(productService.getProductById(productId));
-//			cart.setCustomer(c);
-//			cart.setProducts(prod);
-//		}
-//		return cartRepository.save(cart);
-//	}
-	
-	public Cart addToCart(Long productId, Long customerId, int quantity) {
-	    // Find the customer by ID
-	    Optional<Customer> customerOptional = customerService.getCustomerById(customerId);
-	    
-	    if (customerOptional.isPresent()) {
-	        Customer customer = customerOptional.get();
-	        
-	        // Find the product by ID
-	        Product product = productService.getProductById(productId);
-	        
-	        // Find the cart by customer ID
-	        Cart cart = cartRepository.findByCustomer_Id(customerId);
-	        
-	        if (cart == null) {
-	            // If the cart doesn't exist, create a new one
-	            cart = new Cart();
-	            cart.setCustomer(customer);
-	            List<Product> products = new ArrayList<>();
-	            products.add(product);
-	            cart.setProducts(products);
-	        } else {
-	            // If the cart exists, add the product to it
-	            List<Product> products = cart.getProducts();
-	            products.add(product);
-	            cart.setCustomer(customer);
-	            cart.setProducts(products);
-	        }
-	        
-	        // Save the cart
-	        return cartRepository.save(cart);
-	    } else {
-	        // Handle the case where the customer is not found
-	        // You may throw an exception or return a special value indicating an error
-	        return null; // For simplicity, returning null here; consider better error handling
-	    }
-	}
+        if (customerOptional.isPresent()) {
+            Customer customer = customerOptional.get();
 
-	public List<Cart> getCart() {
+            // Find the product by ID
+            Product product = productService.getProductById(productId);
 
-		return cartRepository.findAll();
+            // Find the cart by customer ID
+            Cart cart = cartRepository.findByCustomer_Id(customerId);
 
-	}
+            if (cart == null) {
+                // If the cart doesn't exist, create a new one
+                cart = new Cart();
+                cart.setCustomer(customer);
+                List<Product> products = new ArrayList<>();
+                products.add(product);
+                cart.setProducts(products);
+                cart.setQuantity(quantity);
 
-	public Cart getCartByCustomerId(Long customerId) {
-		// Assuming CartRepository has a method like findByCustomer_Id
-		// return cartRepository.findByCustomer_Id(customerId);
-		return cartRepository.findByCustomer_Id(customerId);
+            } else {
+                // If the cart exists, add the product to it
+                List<Product> products = cart.getProducts();
+                products.add(product);
+                cart.setCustomer(customer);
+                cart.setProducts(products);
+                cart.setQuantity(quantity);
+            }
+            Cart c = cartRepository.save(cart);
+            return c;
+        } else {
+            // Handle the case where the customer is not found
+            // You may throw an exception or return a special value indicating an error
+            return null; // For simplicity, returning null here; consider better error handling
+        }
+    }
 
-	}
+    // Method to get all carts.
+    public List<Cart> getCart() {
+        return cartRepository.findAll();
+    }
 
+    // Method to get a cart by customer ID.
+    public Cart getCartByCustomerId(Long customerId) {
+        // Assuming CartRepository has a method like findByCustomer_Id
+        // return cartRepository.findByCustomer_Id(customerId);
+        return cartRepository.findByCustomer_Id(customerId);
+    }
+
+    // Method to delete a cart by cart ID.
+    public void deleteCartByCartId(Long cartId) {
+        // Find the cart by ID
+        Cart cart = cartRepository.findById(cartId).get();
+        List<Product> products = cart.getProducts();
+        products.clear();
+        cart.setQuantity(0);
+        cart.setProducts(products);
+        cartRepository.save(cart);
+    }
 }
