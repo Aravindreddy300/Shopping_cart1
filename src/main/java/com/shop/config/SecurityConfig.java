@@ -22,25 +22,25 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
-
+    // Constructor to set the userDetailsService
     public SecurityConfig(UserDetailsService userDetailsService){
         this.userDetailsService = userDetailsService;
     }
-
+    // Defines the password encoder bean
     @Bean
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
+ // Defines the authentication manager bean
     @Bean
     public AuthenticationManager authenticationManager(
                                  AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
+ // Defines the security filter chain
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+    	// Configures HTTP security, disables CSRF, and permits all requests
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize.anyRequest().permitAll()
